@@ -39,7 +39,7 @@ FAQ = """Вопросы:
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-TOKEN = "5130663412:AAGLZO3V1wN6Ry8hy8tnBluldBz9HKh76e4"
+TOKEN = "YOUR_TOKEN"
 bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
