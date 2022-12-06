@@ -130,5 +130,5 @@ async def process_add_category(message: types.Message, state: FSMContext):
             cursor.execute(ins_task_without_category, (user_id, date_db, task_db, category_db))
             db.commit()
 
-            text = f"Задача \"{task}\" на дату \"{date_user}\" без категории успешно добавлена!"
+            text = f"Задача \"{task}\" на дату \"{date_user}\" успешно добавлена!"
             await to_main_menu(message, text, state)

@@ -22,3 +22,7 @@ class DelTaskState(StatesGroup):
     del_all_perm = State()
     get_date_user = State()
     get_number_user = State()
+
+
+class AddNoteState(StatesGroup):
+    add_note = State()
