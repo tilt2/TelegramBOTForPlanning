@@ -1,5 +1,5 @@
-from checkers import *
-from utils import AddNoteState
+from TelegramBOTSQLite3.checkers import *
+from TelegramBOTSQLite3.utils import AddNoteState
 
 
 @dp.message_handler(regexp="Добавить заметку")
@@ -33,21 +33,31 @@ async def process_add_note(message: types.Message, state: FSMContext):
                 await to_main_menu(message, text, state)
 
             else:
-                number = 1
+                note_id_db = 1
                 if rows:
                     for row in rows:
-                        task_number = int(row[1].split()[0])
-                        if task_number == number:
-                            number += 1
+                        task_number = row[1]
+                        if task_number == note_id_db:
+                            note_id_db += 1
                         else:
                             break
-                note_db = f"{number} — {note}"
 
-                add_note_query = "INSERT INTO `notes` VALUES (?, ?)"
-                cursor.execute(add_note_query, (user_id, note_db,))
+                add_note_query = "INSERT INTO `notes` VALUES (?, ?, ?)"
+                cursor.execute(add_note_query, (user_id, note_id_db, note))
                 db.commit()
 
-                text = f"Ваша заметка под номером \"{number}\" успешно добавлена"
+                words_note = note.split()
+                if len(words_note) >= 4:
+                    text = f"Ваша заметка \"{words_note[0]} {words_note[1]} {words_note[2]}"
+                    text += f"...\" под номером \"{note_id_db}\" успешно добавлена"
+
+                else:
+                    if len(words_note[0]) < 10:
+                        text = f"Ваша заметка \"{words_note[0]}\" под номером \"{note_id_db}\" успешно добавлена"
+
+                    else:
+                        text = f"Ваша заметка \"{words_note[0][0:8]}...\" под номером \"{note_id_db}\" успешно добавлена"
+
                 await to_main_menu(message, text, state)
 
         elif length_note > 200:

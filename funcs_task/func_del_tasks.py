@@ -1,4 +1,4 @@
-from checkers import *
+from TelegramBOTSQLite3.checkers import *
 
 
 @dp.message_handler(regexp="Удалить все задачи на дату")

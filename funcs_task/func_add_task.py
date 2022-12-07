@@ -1,5 +1,5 @@
-from checkers import *
-from utils import AddTaskState
+from TelegramBOTSQLite3.checkers import *
+from TelegramBOTSQLite3.utils import AddTaskState
 
 
 @dp.message_handler(regexp="Добавить задачу")
