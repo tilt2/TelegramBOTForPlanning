@@ -1,4 +1,3 @@
-# TODO do this show note
 from TelegramBOTSQLite3.checkers import *
 
 
