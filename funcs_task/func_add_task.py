@@ -73,7 +73,8 @@ async def process_add_category(message: types.Message, state: FSMContext):
 
                 except Exception as err:
                     text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-                    await to_main_menu(message, text, state)
+                    await to_main_menu(message, text)
+                    await state.finish()
 
                 else:
                     counter = 1
@@ -92,7 +93,8 @@ async def process_add_category(message: types.Message, state: FSMContext):
                     db.commit()
 
                     text = f"Задача \"{task}\" на дату \"{date_user}\" с категорией \"{category}\" успешно добавлена!"
-                    await to_main_menu(message, text, state)
+                    await to_main_menu(message, text)
+                    await state.finish()
 
             elif len(category) > 32:
                 text = "Категория слишком длинная, попробуйте сократить её\nНапишите категорию ещё раз"
@@ -110,7 +112,8 @@ async def process_add_category(message: types.Message, state: FSMContext):
 
         except Exception as err:
             text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
-            await to_main_menu(message, text, state)
+            await to_main_menu(message, text)
+            await state.finish()
 
         else:
             counter = 1
@@ -131,4 +134,5 @@ async def process_add_category(message: types.Message, state: FSMContext):
             db.commit()
 
             text = f"Задача \"{task}\" на дату \"{date_user}\" успешно добавлена!"
-            await to_main_menu(message, text, state)
+            await to_main_menu(message, text)
+            await state.finish()

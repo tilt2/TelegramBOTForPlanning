@@ -11,22 +11,26 @@ async def show_all(message: types.Message, state: FSMContext):
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-        await to_main_menu(message, text, state)
+        await to_main_menu(message, text)
+        await state.finish()
 
     else:
         if rows_dates:
             text = ''
+            
             for row_date in rows_dates:
                 date_db = list(row_date)[0]
                 show_all_date = "SELECT * FROM `tasks` "
                 show_all_date += "WHERE `tasks`.`user_id` = ? AND `tasks`.`date` = ? ORDER BY `tasks`.`task`"
                 rows_tasks_date = cursor.execute(show_all_date, (user_id, date_db)).fetchall()
+
                 date_tmp = rows_tasks_date[0][1].split("-")
                 date_txt = "{}.{}.{}".format(date_tmp[2], date_tmp[1], date_tmp[0])
                 text += f"{date_txt}\n"
                 for task in rows_tasks_date:
                     text += f"\t{task[2]} {task[3]}\n"
                 text += "\n"
+
             await message.answer(text)
             await state.finish()
 
@@ -45,7 +49,8 @@ async def show_date(message: types.Message, state: FSMContext):
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-        await to_main_menu(message, text, state)
+        await to_main_menu(message, text)
+        await state.finish()
 
     else:
         if date_tasks:
@@ -63,7 +68,8 @@ async def show_date(message: types.Message, state: FSMContext):
 
         else:
             text = "<ошибка>\nУ вас нет никаких задач"
-            await to_main_menu(message, text, state)
+            await to_main_menu(message, text)
+            await state.finish()
 
 
 @dp.message_handler(state=ShowTaskState.date_show_user)
@@ -79,7 +85,8 @@ async def process_show_date(message: types.Message, state: FSMContext):
 
             except Exception as err:
                 text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             else:
                 if rows:
@@ -88,7 +95,8 @@ async def process_show_date(message: types.Message, state: FSMContext):
                     text = f"{date_txt}\n"
                     for row in rows:
                         text += f"\t{row[2]} {row[3]}\n"
-                    await to_main_menu(message, text, state)
+                    await to_main_menu(message, text)
+                    await state.finish()
 
                 else:
                     text = "<ошибка>\nУ вас нет задач на эту дату, "

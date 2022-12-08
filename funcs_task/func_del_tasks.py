@@ -50,8 +50,10 @@ async def process_del_date(message: types.Message, state: FSMContext):
                     del_tasks_date = "DELETE FROM `tasks` WHERE `tasks`.`date` = ? AND `tasks`.`user_id` = ?"
                     cursor.execute(del_tasks_date, (date_db, user_id))
                     db.commit()
+
                     text = f"Все ваши задачи на дату \"{date_of_task}\" успешно были удалены!"
                     await to_del_tasks_menu(message, text, state)
+                    await state.finish()
 
                 else:
                     text = "<ошибка>\nУ вас нет задач на эту дату, "
@@ -113,6 +115,7 @@ async def process_all_del(message: types.Message, state: FSMContext):
         else:
             text = "Все ваши задачи успешно были удалены!"
             await to_main_menu(message, text, state)
+            await state.finish()
 
     elif answer == "нет":
         text = "Вы вернулись в меню удаления"
@@ -176,7 +179,9 @@ async def process_get_date_of_task(message: types.Message, state: FSMContext):
                     text = f"{date_txt}\n"
                     for row in rows:
                         text += f"\t{row[2]} {row[3]}\n"
+
                     text += "\nТеперь выберите номер задачи, которую вы хотите удалить"
+
                     await state.update_data(get_date_user=date_of_task)
                     await message.answer(text)
                     await DelTaskState.get_number_user.set()
@@ -227,6 +232,7 @@ async def process_get_number_of_task(message: types.Message, state: FSMContext):
                 if task_db:
                     task_number = 1
                     task_show = task_db[0][2][6:]
+
                     for task in select_tasks:
                         task_number_db = f"%{task[2].split()[0]}%"
                         task_list = task[2].split()
@@ -246,8 +252,10 @@ async def process_get_number_of_task(message: types.Message, state: FSMContext):
 
                         else:
                             task_number += 1
+
                     text = f"Задача \"{task_show}\" успешно удалена!"
                     await to_del_tasks_menu(message, text, state)
+                    await state.finish()
 
                 else:
                     text = "У вас нет задачи с таким номером, введите другой номер или нажмите на \"Главное меню\""

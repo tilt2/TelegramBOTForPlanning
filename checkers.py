@@ -34,7 +34,7 @@ async def check_main_menu(message: types.Message, message_from_user: str, state:
         return 0
 
 
-async def to_main_menu(message: types.Message, text: str, state: FSMContext):
+async def to_main_menu(message: types.Message, text: str):
     kb = [
         [to_tasks_btn, to_notes_btn],
         [help_btn, faq_btn],
@@ -45,7 +45,6 @@ async def to_main_menu(message: types.Message, text: str, state: FSMContext):
     )
 
     await message.answer(text, reply_markup=markup)
-    await state.finish()
 
 
 async def to_del_tasks_menu(message: types.Message, text: str, state: FSMContext):
