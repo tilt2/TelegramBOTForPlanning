@@ -91,10 +91,10 @@ async def notes(message):
     add_note_btn = KeyboardButton("Добавить заметку")
     show_all_notes_btn = KeyboardButton("Показать все заметки")
     del_note_btn = KeyboardButton("Удалить заметку")
+    del_all_notes_btn = KeyboardButton("Удалить все заметки")
     kb = [
-        [add_note_btn],
-        [show_all_notes_btn],
-        [del_note_btn],
+        [add_note_btn, show_all_notes_btn],
+        [del_note_btn, del_all_notes_btn],
         [to_tasks_btn],
         [help_btn, faq_btn],
     ]
