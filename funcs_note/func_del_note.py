@@ -31,9 +31,9 @@ async def process_get_number_of_note(message: types.Message, state: FSMContext):
                 select_note =  "SELECT * FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
                 notes_db = cursor.execute(select_note, (user_id, number_db)).fetchall()
 
-                # delete_note = "DELETE FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
-                # cursor.execute(delete_note, (user_id, number_db))
-                # db.commit()
+                delete_note = "DELETE FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
+                cursor.execute(delete_note, (user_id, number_db))
+                db.commit()
 
                 select_notes_number = "SELECT * FROM `notes` WHERE `notes`.`user_id` = ?"
                 select_notes = cursor.execute(select_notes_number, (user_id,)).fetchall()
