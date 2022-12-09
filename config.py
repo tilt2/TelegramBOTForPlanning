@@ -89,8 +89,12 @@ async def main_menu(message: types.Message, state: FSMContext):
 @dp.message_handler(regexp='Заметка')
 async def notes(message):
     add_note_btn = KeyboardButton("Добавить заметку")
+    show_all_notes_btn = KeyboardButton("Показать все заметки")
+    del_note_btn = KeyboardButton("Удалить заметку")
     kb = [
         [add_note_btn],
+        [show_all_notes_btn],
+        [del_note_btn],
         [to_tasks_btn],
         [help_btn, faq_btn],
     ]

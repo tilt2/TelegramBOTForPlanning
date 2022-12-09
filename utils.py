@@ -26,3 +26,7 @@ class DelTaskState(StatesGroup):
 
 class AddNoteState(StatesGroup):
     add_note = State()
+
+
+class DelNoteState(StatesGroup):
+    get_number = State()

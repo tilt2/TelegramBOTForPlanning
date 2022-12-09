@@ -10,7 +10,8 @@ async def del_date(message: types.Message, state: FSMContext):
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
-        await to_main_menu(message, text, state)
+        await to_main_menu(message, text)
+        await state.finish()
 
     else:
         if rows != ():
@@ -43,7 +44,8 @@ async def process_del_date(message: types.Message, state: FSMContext):
 
             except Exception as err:
                 text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             else:
                 if rows:
@@ -74,7 +76,8 @@ async def permission_to_del(message: types.Message, state: FSMContext):
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
-        await to_main_menu(message, text, state)
+        await to_main_menu(message, text)
+        await state.finish()
 
     else:
         if rows:
@@ -110,11 +113,12 @@ async def process_all_del(message: types.Message, state: FSMContext):
 
         except Exception as err:
             text = f"{err}\nНу капец, тут ошибка произошла в общем, так что напишите мне о ней: @Becenniytilt"
-            await to_main_menu(message, text, state)
+            await to_main_menu(message, text)
+            await state.finish()
 
         else:
             text = "Все ваши задачи успешно были удалены!"
-            await to_main_menu(message, text, state)
+            await to_main_menu(message, text)
             await state.finish()
 
     elif answer == "нет":
@@ -135,7 +139,8 @@ async def del_task(message: types.Message, state: FSMContext):
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
-        await to_main_menu(message, text, state)
+        await to_main_menu(message, text)
+        await state.finish()
 
     else:
         if rows != ():
@@ -170,7 +175,8 @@ async def process_get_date_of_task(message: types.Message, state: FSMContext):
 
             except Exception as err:
                 text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             else:
                 if rows:
@@ -202,7 +208,7 @@ async def process_get_number_of_task(message: types.Message, state: FSMContext):
     data = await state.get_data()
     date_db = change_date(data["get_date_user"])
 
-    if not await check_main_menu(message, number_of_task, state):
+    if not await check_main_menu(message, message.text, state):
         if number_of_task.isdigit():
             try:
                 user_id = message.from_user.id
@@ -222,11 +228,13 @@ async def process_get_number_of_task(message: types.Message, state: FSMContext):
 
             except sqlite3.OperationalError as err:
                 text = f"{err}\nОшибка с запросом в БД, напишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             except Exception as err:
                 text = f"{err.__context__}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             else:
                 if task_db:
@@ -247,7 +255,8 @@ async def process_get_number_of_task(message: types.Message, state: FSMContext):
 
                         except Exception as err:
                             text = f"{err}\nПроизошла ошибка, напишите мне о ней: @Becenniytilt"
-                            await to_main_menu(message, text, state)
+                            await to_main_menu(message, text)
+                            await state.finish()
                             break
 
                         else:

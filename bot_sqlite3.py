@@ -2,7 +2,7 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from checkers import *
 from funcs_task import func_add_task, func_show_tasks, func_del_tasks
-from funcs_note import func_add_note
+from funcs_note import func_add_note, func_show_notes, func_del_note
 
 
 async def reminder_on_action(message: types.Message, user_id: int, date_db: str):

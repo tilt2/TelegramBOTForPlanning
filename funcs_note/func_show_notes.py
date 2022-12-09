@@ -7,7 +7,7 @@ async def show_notes(message: types.Message):
 
     try:
         select_notes = "SELECT * FROM `notes` WHERE `notes`.`user_id` = ?"
-        cursor.execute(select_notes, (user_id,))
+        rows = cursor.execute(select_notes, (user_id,)).fetchall()
 
     except Exception as err:
         text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
@@ -15,8 +15,8 @@ async def show_notes(message: types.Message):
 
     else:
         if select_notes:
-            text = "Все ваши заметки\n\n"
-            for note in select_notes:
+            text = "Все ваши заметки\n"
+            for note in rows:
                 text += f"\n{note[1]} — {note[2]}\n"
             await message.answer(text)
 
