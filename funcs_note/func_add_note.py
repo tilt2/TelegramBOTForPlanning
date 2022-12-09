@@ -30,7 +30,8 @@ async def process_add_note(message: types.Message, state: FSMContext):
 
             except Exception as err:
                 text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
             else:
                 note_id_db = 1
@@ -56,9 +57,11 @@ async def process_add_note(message: types.Message, state: FSMContext):
                         text = f"Ваша заметка \"{words_note[0]}\" под номером \"{note_id_db}\" успешно добавлена"
 
                     else:
-                        text = f"Ваша заметка \"{words_note[0][0:8]}...\" под номером \"{note_id_db}\" успешно добавлена"
+                        text = f"Ваша заметка \"{words_note[0][0:8]}...\" "
+                        text += f"под номером \"{note_id_db}\" успешно добавлена"
 
-                await to_main_menu(message, text, state)
+                await to_main_menu(message, text)
+                await state.finish()
 
         elif length_note > 200:
             text = "Ваша заметка слишком длинная!\nВведите её ещё раз"
