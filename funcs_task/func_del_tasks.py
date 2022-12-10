@@ -94,15 +94,15 @@ async def permission_to_del(message: types.Message, state: FSMContext):
 
             text = "Вы действительно хотите удалить все задачи?\nИх нельзя будет восстановить!"
             await message.answer(text, reply_markup=markup)
-            await DelTaskState.del_all_perm.set()
+            await DelTaskState.del_all_tasks_perm.set()
 
         else:
             text = "<ошибка>\nУ вас нет никаких задач"
             await message.answer(text)
 
 
-@dp.message_handler(state=DelTaskState.del_all_perm)
-async def process_all_del(message: types.Message, state: FSMContext):
+@dp.message_handler(state=DelTaskState.del_all_tasks_perm)
+async def process_all_del_tasks(message: types.Message, state: FSMContext):
     answer = message.text.lower()
     if answer == "да":
         try:

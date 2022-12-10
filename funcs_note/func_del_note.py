@@ -1,4 +1,3 @@
-# TODO do this del func
 from TelegramBOTSQLite3.checkers import *
 from TelegramBOTSQLite3.utils import DelNoteState
 
@@ -28,7 +27,7 @@ async def process_get_number_of_note(message: types.Message, state: FSMContext):
                 user_id = message.from_user.id
                 number_db = f"%{number_of_note}%"
 
-                select_note =  "SELECT * FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
+                select_note = "SELECT * FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
                 notes_db = cursor.execute(select_note, (user_id, number_db)).fetchall()
 
                 delete_note = "DELETE FROM `notes` WHERE `notes`.`user_id` = ? AND `notes`.`note_id` LIKE ?"
@@ -87,3 +86,67 @@ async def process_get_number_of_note(message: types.Message, state: FSMContext):
         else:
             text = "<ошибка>\nВы ввели не цифру, введите номер заметки ещё раз или нажмите на \"Главное меню\""
             await message.answer(text)
+
+
+@dp.message_handler(regexp="Удалить ВСЕ заметки")
+async def del_all(message: types.Message):
+    try:
+        user_id = message.from_user.id
+        all_tasks = "SELECT * FROM `notes` WHERE `notes`.`user_id` = ?"
+        rows = cursor.execute(all_tasks, (user_id,)).fetchall()
+
+    except Exception as err:
+        text = f"{err}\nОЙ, какая-то ошибочка, напишите мне о ней: @Becenniytilt"
+        await to_main_menu(message, text)
+
+    else:
+        if rows:
+            yes_btn = KeyboardButton("Да")
+            no_btn = KeyboardButton("Нет")
+
+            kb = [
+                [yes_btn, no_btn],
+            ]
+            markup = ReplyKeyboardMarkup(
+                keyboard=kb,
+                resize_keyboard=True
+            )
+
+            text = "Вы действительно хотите удалить все заметки?\nИх нельзя будет восстановить!"
+            await message.answer(text, reply_markup=markup)
+            await DelNoteState.del_all_notes_perm.set()
+
+        else:
+            text = "<ошибка>\nУ вас нет никаких заметок"
+            await message.answer(text)
+
+
+@dp.message_handler(state=DelNoteState.del_all_notes_perm)
+async def perm_all_del_notes(message: types.Message, state: FSMContext):
+    answer = message.text.lower()
+
+    if answer == "да":
+        try:
+            user_id = message.from_user.id
+            del_all_notes = "DELETE FROM `notes` WHERE `notes`.`user_id` = ?"
+            cursor.execute(del_all_notes, (user_id,))
+            db.commit()
+
+        except Exception as err:
+            text = f"{err}\nНу капец, тут ошибка короче, поэтому напишите мне о ней: @Becenniytilt"
+            await to_main_menu(message, text)
+            await state.finish()
+
+        else:
+            text = "Все ваши заметки успешно были удалены"
+            await to_main_menu(message, text)
+            await state.finish()
+
+    elif answer == "нет":
+        text = "Хорошо, не буду удалять ваши значимые заметки"
+        await message.answer(text)
+        await state.finish()
+
+    else:
+        text = "Я не знаю что на это ответить, поэтому даю вам еще один шанс"
+        await message.answer(text)

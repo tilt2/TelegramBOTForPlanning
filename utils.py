@@ -19,7 +19,7 @@ class ShowTaskState(StatesGroup):
 
 class DelTaskState(StatesGroup):
     del_date_user = State()
-    del_all_perm = State()
+    del_all_tasks_perm = State()
     get_date_user = State()
     get_number_user = State()
 
@@ -30,3 +30,4 @@ class AddNoteState(StatesGroup):
 
 class DelNoteState(StatesGroup):
     get_number = State()
+    del_all_notes_perm = State()
