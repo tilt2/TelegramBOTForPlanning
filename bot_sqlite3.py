@@ -40,6 +40,10 @@ async def ny_reminder_on_action(message: types.Message):
 async def ny_reminder_creator(message: types.Message):
     await ny_reminder_on_action(message)
 
+async def test(message: types.Message):
+    text = "тест"
+    await message.answer(text)
+
 
 async def run_daemon(message: types.Message):
     scheduler = AsyncIOScheduler()
@@ -48,6 +52,8 @@ async def run_daemon(message: types.Message):
         task_reminder_creator, "cron", args=([message]),
         hour=7, minute=0
     )
+
+
 
     scheduler.add_job(
         ny_reminder_creator, "date", args=([message]),
