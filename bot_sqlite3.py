@@ -53,7 +53,10 @@ async def run_daemon(message: types.Message):
         hour=7, minute=0
     )
 
-
+    scheduler.add_job(
+        test, "date", args=([message]),
+        date=f"01.01.{datetime.now().year}", hour=8, minute=0
+    )
 
     scheduler.add_job(
         ny_reminder_creator, "date", args=([message]),
