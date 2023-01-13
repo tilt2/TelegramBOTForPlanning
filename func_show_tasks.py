@@ -1,5 +1,5 @@
-from TelegramBOTSQLite3.checkers import *
-from TelegramBOTSQLite3.utils import ShowTaskState
+from checkers import *
+from utils import ShowTaskState
 
 
 @dp.message_handler(regexp="Показать все задачи")

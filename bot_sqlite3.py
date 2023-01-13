@@ -1,8 +1,7 @@
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
-
+import func_add_task, func_show_tasks, func_del_tasks
+import func_add_note, func_show_notes, func_del_note
 from checkers import *
-from funcs_task import func_add_task, func_show_tasks, func_del_tasks
-from funcs_note import func_add_note, func_show_notes, func_del_note
 
 
 async def task_reminder_on_action(message: types.Message, user_id: int, date_db: str):
@@ -41,7 +40,7 @@ async def ny_reminder_creator(message: types.Message):
     await ny_reminder_on_action(message)
 
 async def test(message: types.Message):
-    text = "тест"
+    text = "Не забудьте позавтракать, ведь это самый главный прием пищи!"
     await message.answer(text)
 
 
@@ -50,18 +49,18 @@ async def run_daemon(message: types.Message):
 
     scheduler.add_job(
         task_reminder_creator, "cron", args=([message]),
-        hour=7, minute=0
+        hour=7, minute=0, misfire_grace_time=90
     )
 
     scheduler.add_job(
         test, "date", args=([message]),
-        date=f"01.01.{datetime.now().year}", hour=8, minute=0
+        run_date=datetime(2023, 1, 14, 7, 15, 0)
     )
 
-    scheduler.add_job(
-        ny_reminder_creator, "date", args=([message]),
-        date=f"01.01.{datetime.now().year}", hour=0, minute=0
-    )
+    # scheduler.add_job(
+    #     ny_reminder_creator, "date", args=([message]),
+    #     date=f"01.01.{datetime.now().year}", hour=0, minute=0
+    # )
 
     scheduler.start()
 

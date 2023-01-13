@@ -1,4 +1,4 @@
-from TelegramBOTSQLite3.checkers import *
+from checkers import *
 
 
 @dp.message_handler(regexp="Показать все заметки")
