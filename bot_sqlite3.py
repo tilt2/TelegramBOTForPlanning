@@ -21,6 +21,9 @@ async def task_reminder_on_action(message: types.Message, user_id: int, date_db:
             for row in rows:
                 text += f"\t{row[2]} {row[3]}\n"
             await message.answer(text)
+        else:
+            text = "Сегодня вы можете расслабиться, у вас нет никаких дел :)"
+            await message.answer(text)
 
 
 async def task_reminder_creator(message: types.Message):
@@ -59,7 +62,7 @@ async def run_daemon(message: types.Message):
 
     scheduler.add_job(
         ny_reminder_creator, "cron", args=([message]),
-        month=12, day=31, hour=20, minute=0, misfire_grace_time=90
+        month=12, day=31, hour=19, minute=59, misfire_grace_time=90
     )
 
     scheduler.start()
