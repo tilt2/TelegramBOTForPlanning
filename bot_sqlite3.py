@@ -49,18 +49,18 @@ async def run_daemon(message: types.Message):
 
     scheduler.add_job(
         task_reminder_creator, "cron", args=([message]),
-        hour=7, minute=0, misfire_grace_time=90
+        hour=3, minute=0, second=0, misfire_grace_time=90
     )
 
     scheduler.add_job(
-        test, "date", args=([message]),
-        run_date=datetime(2023, 1, 14, 7, 15, 0)
+        test, "cron", args=([message]),
+        hour=3, minute=15, second=0, misfire_grace_time=90
     )
 
-    # scheduler.add_job(
-    #     ny_reminder_creator, "date", args=([message]),
-    #     date=f"01.01.{datetime.now().year}", hour=0, minute=0
-    # )
+    scheduler.add_job(
+        ny_reminder_creator, "cron", args=([message]),
+        month=12, day=31, hour=20, minute=0, misfire_grace_time=90
+    )
 
     scheduler.start()
 
