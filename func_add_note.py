@@ -1,7 +1,10 @@
 from checkers import *
+
+# класс с состояниями машины состояний для функции добавление заметки в БД
 from utils import AddNoteState
 
 
+# бот просит написать ему текст заметки
 @dp.message_handler(regexp="Добавить заметку")
 async def add_note(message: types.Message):
     kb = [
@@ -14,17 +17,21 @@ async def add_note(message: types.Message):
 
     text = "Напишите заметку"
     await message.answer(text, reply_markup=markup)
+    # перевод машины состояний в другое состояние для запуска следующей функции
     await AddNoteState.add_note.set()
 
 
+ # бот добавляет заметку в базу данных (БД)
 @dp.message_handler(state=AddNoteState.add_note)
 async def process_add_note(message: types.Message, state: FSMContext):
     if not await check_main_menu(message, message.text, state):
         note = message.text
         user_id = message.from_user.id
 
+        # проверяет количество символов заметки
         if 10 <= (length_note := len(note)) <= 200:
             try:
+                # SQL-запрос на наличие других заметок пользователя в БД
                 check_notes = "SELECT * FROM `notes` WHERE `notes`.`user_id` = ? ORDER BY `notes`.`note`"
                 rows = cursor.execute(check_notes, (user_id,))
 
@@ -36,6 +43,7 @@ async def process_add_note(message: types.Message, state: FSMContext):
             else:
                 note_id_db = 1
                 if rows:
+                    # цикл для номера заметки, если у пользователя уже есть заметки в БД
                     for row in rows:
                         task_number = row[1]
                         if task_number == note_id_db:
@@ -43,6 +51,7 @@ async def process_add_note(message: types.Message, state: FSMContext):
                         else:
                             break
 
+                # SQL-запрос на добавление заметки в БД
                 add_note_query = "INSERT INTO `notes` VALUES (?, ?, ?)"
                 cursor.execute(add_note_query, (user_id, note_id_db, note))
                 db.commit()
@@ -61,6 +70,7 @@ async def process_add_note(message: types.Message, state: FSMContext):
                         text += f"под номером \"{note_id_db}\" успешно добавлена"
 
                 await to_main_menu(message, text)
+                # "Очистка" машины состояний
                 await state.finish()
 
         elif length_note > 200:
