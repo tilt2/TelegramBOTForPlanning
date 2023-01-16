@@ -24,7 +24,7 @@ FAQ = """Вопросы:
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-TOKEN = "5883689077:AAE1IqpSBxDCAjMQEXz748L3twDAu2o2Enw"
+TOKEN = "YOUR_TOKEN"
 bot = Bot(token=TOKEN)
 storage = MemoryStorage()
 dp = Dispatcher(bot=bot, storage=storage)
@@ -56,7 +56,9 @@ async def to_main_menu(message: types.Message, text="Вы в главном ме
 @dp.message_handler(regexp="Главное меню")
 async def main_menu(message: types.Message, state: FSMContext):
     kb = [
+        # первый ряд кнопок: меню задач; меню заметок
         [to_tasks_btn, to_notes_btn],
+        # второй ряд кнопок: помощь; часто задаваемые вопросы (ЧаВо)
         [help_btn, faq_btn],
     ]
     markup = ReplyKeyboardMarkup(
@@ -65,7 +67,9 @@ async def main_menu(message: types.Message, state: FSMContext):
         input_field_placeholder="Выберите в какое меню вы хотите перейти"
     )
 
-    text = "Вы в главном меню, отсюда вы можете зайти в заметки или в задачи"
+    text = "Вы в главном меню, "
+    text += "отсюда вы можете зайти"
+    text += " в заметки или в задачи"
 
     await message.answer(text, reply_markup=markup)
     await state.finish()
@@ -78,9 +82,13 @@ async def notes(message):
     del_note_btn = KeyboardButton("Удалить заметку")
     del_all_notes_btn = KeyboardButton("Удалить все заметки")
     kb = [
+        # первый ряд: добавить заметку; показать все заметки
         [add_note_btn, show_all_notes_btn],
+        # второй ряд: удалить заметку; удалить все заметки
         [del_note_btn, del_all_notes_btn],
+        # третий ряд: меню задач
         [to_tasks_btn],
+        # четвертый ряд: помощь; ЧаВо
         [help_btn, faq_btn],
     ]
     markup = ReplyKeyboardMarkup(
@@ -98,9 +106,13 @@ async def tasks(message):
     show_tasks_btn = KeyboardButton("Показать задачи на дату")
     show_all_tasks_btn = KeyboardButton("Показать все задачи")
     kb = [
+        # первый ряд: добавить задачу; меню удаления задач
         [add_task_btn, to_del_tasks_btn],
+        # второй ряд: показать задачи на дату; показать все задачи
         [show_tasks_btn, show_all_tasks_btn],
+        # третий ряд: меню заметок
         [to_notes_btn],
+        # четвертый ряд: помощь; ЧаВо
         [help_btn, faq_btn],
     ]
     markup = ReplyKeyboardMarkup(
@@ -118,9 +130,13 @@ async def del_tasks(message):
     del_date_task_btn = KeyboardButton("Удалить задачу на дату")
     del_all_btn = KeyboardButton("Удалить ВСЕ задачи")
     kb = [
+        # первый ряд: удалить все задачи на дату; удалить задачу на дату
         [del_date_btn, del_date_task_btn],
+        # второй ряд: удалить все задачи
         [del_all_btn],
+        # третий ряд: меню задач; меню заметок
         [to_tasks_btn, to_notes_btn],
+        # четвертый ряд: помощь, ЧаВо
         [help_btn, faq_btn],
     ]
     markup = ReplyKeyboardMarkup(
