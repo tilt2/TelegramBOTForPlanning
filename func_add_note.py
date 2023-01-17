@@ -4,8 +4,9 @@ from checkers import *
 from utils import AddNoteState
 
 
-# бот просит написать ему текст заметки
+# запускается при нажатии кнопки "Добавить заметку"
 @dp.message_handler(regexp="Добавить заметку")
+# бот просит написать ему текст заметки
 async def add_note(message: types.Message):
     kb = [
         [to_main_menu_btn],
