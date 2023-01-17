@@ -106,10 +106,6 @@ async def process_all_del_tasks(message: types.Message, state: FSMContext):
     answer = message.text.lower()
     if answer == "да":
         try:
-            # async with message.from_user.id as user_id:
-            #     del_all_tasks = "DELETE FROM `tasks` WHERE `tasks`.`user_id` = ?"
-            #     cursor.execute(del_all_tasks, (user_id,))
-            #     db.commit()
             user_id = message.from_user.id
             del_all_tasks = "DELETE FROM `tasks` WHERE `tasks`.`user_id` = ?"
             cursor.execute(del_all_tasks, (user_id,))
