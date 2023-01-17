@@ -4,8 +4,9 @@ from checkers import *
 from utils import DelNoteState
 
 
-# Бот просит ввести номер заметки
+# запускается при нажатии кнопки "Удалить заметку"
 @dp.message_handler(regexp="Удалить заметку")
+# Бот просит ввести номер заметки
 async def del_note(message: types.Message):
     try:
         user_id = message.from_user.id
@@ -114,8 +115,9 @@ async def process_get_number_of_note(message: types.Message, state: FSMContext):
             await message.answer(text)
 
 
-# функция удаления всех заметок пользователя
+# запускается при нажатии кнопки "Удалить ВСЕ заметки"
 @dp.message_handler(regexp="Удалить ВСЕ заметки")
+# функция удаления всех заметок пользователя
 async def del_all(message: types.Message):
     try:
         # SQL-запрос для просмотра на наличия у пользователя заметок
