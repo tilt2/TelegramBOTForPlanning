@@ -1,7 +1,9 @@
 from checkers import *
 
 
-@dp.message_handler(regexp="Показать все заметки")  # показывает все заметки пользователю
+# запускается при нажатии кнопки "Показать все заметки"
+@dp.message_handler(regexp="Показать все заметки") 
+# показывает все заметки пользователю
 async def show_notes(message: types.Message):
     user_id = message.from_user.id
 
