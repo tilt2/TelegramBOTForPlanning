@@ -24,10 +24,10 @@ FAQ = """Вопросы:
 logger = telebot.logger
 telebot.logger.setLevel(logging.INFO)
 
-TOKEN = "YOUR_TOKEN"
-bot = Bot(token=TOKEN)
-storage = MemoryStorage()
-dp = Dispatcher(bot=bot, storage=storage)
+TOKEN = "YOUR_TOKEN"  #
+bot = Bot(token=TOKEN)  #
+storage = MemoryStorage()  #
+dp = Dispatcher(bot=bot, storage=storage)  #
 
 db = sqlite3.connect(r'DATABASE BOT.db', check_same_thread=False)
 cursor = db.cursor()

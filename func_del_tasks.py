@@ -39,31 +39,29 @@ async def process_del_date(message: types.Message, state: FSMContext):
         if date_db := change_date(date_of_task):
             try:
                 user_id = message.from_user.id
-                check_tasks_date = "SELECT * FROM `tasks` WHERE `tasks`.`date` = ? AND `tasks`.`user_id` = ?"
+                check_tasks_date = "SELECT * FROM `tasks` WHERE " \
+                                   "`tasks`.`date` = ? AND `tasks`.`user_id` = ?"
                 rows = cursor.execute(check_tasks_date, (date_db, user_id,)).fetchall()
-
             except Exception as err:
                 text = f"{err}\nОЙ, какая-то ошибочка,\nнапишите мне о ней: @Becenniytilt"
                 await to_main_menu(message, text)
                 await state.finish()
-
             else:
                 if rows:
-                    del_tasks_date = "DELETE FROM `tasks` WHERE `tasks`.`date` = ? AND `tasks`.`user_id` = ?"
+                    del_tasks_date = "DELETE FROM `tasks` WHERE" \
+                                     " `tasks`.`date` = ? AND `tasks`.`user_id` = ?"
                     cursor.execute(del_tasks_date, (date_db, user_id))
                     db.commit()
-
                     text = f"Все ваши задачи на дату \"{date_of_task}\" успешно были удалены!"
                     await to_del_tasks_menu(message, text, state)
                     await state.finish()
-
                 else:
                     text = "<ошибка>\nУ вас нет задач на эту дату, "
                     text += "введите другую дату ДД.ММ.ГГГГ или нажмите на \"Главное меню\""
                     await message.answer(text)
-
         else:
-            text = "<ошибка>\nВы неправильно ввели дату, введите её ещё раз ДД.ММ.ГГГГ или нажмите на \"Главное меню\""
+            text = "<ошибка>\nВы неправильно ввели дату, введите её ещё раз " \
+                   "ДД.ММ.ГГГГ или нажмите на \"Главное меню\""
             await message.answer(text)
 
 
